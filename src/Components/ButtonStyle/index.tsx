@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {colors} from '../../Common/theme';
 
 export const ButtonStyle = ({
   children,
@@ -10,19 +11,22 @@ export const ButtonStyle = ({
 }) => {
   return (
     <TouchableOpacity style={Styles.button} onPress={() => action()}>
-      <Text>{children}</Text>
+      <Text style={Styles.text}>{children}</Text>
     </TouchableOpacity>
   );
 };
 
 const Styles = StyleSheet.create({
   button: {
-    width: 80,
+    width: '100%',
     paddingHorizontal: 16,
     paddingVertical: 16,
     alignItems: 'center',
-    backgroundColor: 'red',
+    backgroundColor: colors.primary,
     borderRadius: 8,
-    marginLeft: 8,
+  },
+  text: {
+    color: colors.white,
+    fontWeight: '600',
   },
 });

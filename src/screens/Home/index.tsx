@@ -6,17 +6,33 @@ import useGetPatients from '../../Hooks/getPatients';
 import BottomSheet from '../../Components/BottomSheet';
 import {ButtonStyle} from '../../Components/ButtonStyle';
 import useGlobalSessionState from '../../Services/globalStates';
+import {colors} from '../../Common/theme';
 
 const Home = () => {
   const {data, loading} = useGetPatients();
   const [show, setShow] = useState<boolean>(false);
-  const {addPatients, patients} = useGlobalSessionState();
+  const [animation, setAnimation] = useState<boolean>(false);
+
+  const {addPatients, setPatientSelected, patients} = useGlobalSessionState();
 
   useEffect(() => {
     if (data && data.length > 0) {
-      addPatients(data); // Setea los pacientes en el estado global
+      addPatients(data);
     }
   }, [data, addPatients]);
+
+  useEffect(() => {
+    if (!show) {
+      setPatientSelected({
+        avatar: '',
+        createdAt: '',
+        description: '',
+        id: '',
+        name: '',
+        website: '',
+      });
+    }
+  }, [setPatientSelected, show]);
 
   if (loading) {
     return (
@@ -27,21 +43,30 @@ const Home = () => {
   }
   return (
     <>
-      <BottomSheet modalVisible={show} setModalVisible={setShow} />
+      <BottomSheet
+        animation={animation}
+        onDismiss={() => setShow(false)}
+        show={show}
+        setAnimation={setAnimation}
+        key={'BottomSheet'}
+      />
       <View style={styles.sectionContainer}>
         <Header />
         <View style={styles.sectionButtons}>
-          <ButtonStyle
-            children="Create"
-            key={'button-create'}
-            action={() => setShow(true)}
-          />
+          <View style={styles.buttonView}>
+            <ButtonStyle
+              children="Create"
+              key={'button-create'}
+              action={() => setShow(true)}
+            />
+          </View>
         </View>
         <View style={styles.sectionList}>
           <FlatList
             data={patients}
             style={styles.flatList}
             renderItem={({item}) => <Card patient={item} setShow={setShow} />}
+            ListFooterComponent={<View style={styles.footerList} />}
           />
         </View>
       </View>
@@ -53,6 +78,7 @@ const styles = StyleSheet.create({
   sectionContainer: {
     height: '100%',
     display: 'flex',
+    backgroundColor: colors.white,
   },
   sectionLoading: {
     alignItems: 'center',
@@ -74,6 +100,13 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     paddingHorizontal: 12,
     flex: 1,
+  },
+  footerList: {
+    marginBottom: 40,
+  },
+  buttonView: {
+    width: 80,
+    marginLeft: 8,
   },
 });
 

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Image,
   StyleSheet,
   TouchableOpacity,
@@ -14,6 +13,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import useGlobalSessionState from '../../Services/globalStates';
 import {IPatient} from '../../Interfaces/patient.model';
 import moment from 'moment';
+import {ButtonStyle} from '../ButtonStyle';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('El nombre es requerido'),
@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
     .required('El sitio web es requerido'),
 });
 
-const MyForm = () => {
+const MyForm = ({onDismiss}: {onDismiss: () => void}) => {
   const [imageUri, setImageUri] = useState('');
   const {getPatientSelected, updatePatient, addPatient} =
     useGlobalSessionState();
@@ -44,7 +44,7 @@ const MyForm = () => {
         website: pacienteSelected.website,
         avatar: !pacienteSelected.avatar ? '' : pacienteSelected.avatar,
       });
-      setImageUri(pacienteSelected.avatar || ''); // Setea la imagen si existe
+      setImageUri(pacienteSelected.avatar || '');
     }
   }, [pacienteSelected]);
 
@@ -70,12 +70,12 @@ const MyForm = () => {
       validationSchema={validationSchema}
       enableReinitialize
       onSubmit={values => {
-        console.log(values);
-        if (pacienteSelected) {
+        if (pacienteSelected.id !== '') {
           const pacienteUpdate = {
             ...pacienteSelected,
             ...values,
           };
+          console.log('updatePatient');
           updatePatient(pacienteUpdate);
         } else {
           const newPatient: IPatient = {
@@ -84,9 +84,10 @@ const MyForm = () => {
             avatar: values.avatar || '',
             createdAt: moment().format('YYYY-MM-DD'),
           };
+          console.log('addPatient');
           addPatient(newPatient);
         }
-        // * creacion del servicio de alta, update y eliminacion de pacientes
+        onDismiss();
       }}>
       {({
         handleChange,
@@ -148,7 +149,11 @@ const MyForm = () => {
               <Text style={styles.error}>{errors.website}</Text>
             )}
           </View>
-          <Button title="Enviar" onPress={() => handleSubmit} />
+          <ButtonStyle
+            children="Accept"
+            key={'button-accept'}
+            action={() => handleSubmit()}
+          />
         </View>
       )}
     </Formik>

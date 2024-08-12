@@ -11,6 +11,8 @@ import {
 import {IPatient} from '../../../../Interfaces/patient.model';
 import {ButtonStyle} from '../../../../Components/ButtonStyle';
 import useGlobalSessionState from '../../../../Services/globalStates';
+import {colors} from '../../../../Common/theme';
+import moment from 'moment';
 
 const Card = ({
   patient,
@@ -22,19 +24,20 @@ const Card = ({
   const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const {setPatientSelected, deletePatient} = useGlobalSessionState();
+  const imageUrl = patient.avatar !== '' ? encodeURI(patient.avatar) : '';
 
   const toggleExpand = () => {
     setExpanded(!expanded);
     Animated.timing(animation, {
       toValue: expanded ? 0 : 1,
       duration: 200,
-      useNativeDriver: false, // No usar useNativeDriver para animar height
+      useNativeDriver: false,
     }).start();
   };
 
   const animatedHeight = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 300], // Altura final del collapse al expandirlo
+    outputRange: [0, 300],
   });
 
   return (
@@ -45,13 +48,15 @@ const Card = ({
             <Image
               style={styles.image}
               source={{
-                uri: 'https://reactnative.dev/img/tiny_logo.png',
+                uri: imageUrl,
               }}
             />
           </View>
           <View style={styles.sectionInformation}>
             <Text style={styles.title}>{patient.name}</Text>
-            <Text style={styles.date}>{patient.createdAt}</Text>
+            <Text style={styles.date}>
+              {`Created at: ${moment(patient.createdAt).format('YYYY-MM-DD')}`}
+            </Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -61,19 +66,23 @@ const Card = ({
             <Text style={styles.website}>{patient.website}</Text>
             <Text style={styles.description}>{patient.description}</Text>
             <View style={styles.sectionButtons}>
-              <ButtonStyle
-                children="Edit"
-                key={'button-edit'}
-                action={() => {
-                  setPatientSelected(patient);
-                  setShow(true);
-                }}
-              />
-              <ButtonStyle
-                children="Delete"
-                key={'button-delete'}
-                action={() => deletePatient(patient.id)}
-              />
+              <View style={styles.buttonView}>
+                <ButtonStyle
+                  children="Edit"
+                  key={'button-edit'}
+                  action={() => {
+                    setPatientSelected(patient);
+                    setShow(true);
+                  }}
+                />
+              </View>
+              <View style={styles.buttonView}>
+                <ButtonStyle
+                  children="Delete"
+                  key={'button-delete'}
+                  action={() => deletePatient(patient.id)}
+                />
+              </View>
             </View>
           </ScrollView>
         )}
@@ -90,7 +99,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
-    backgroundColor: 'yellow',
+    backgroundColor: colors.secondary,
   },
   sectionContainer: {
     width: 'auto',
@@ -137,6 +146,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 12,
     marginBottom: 16,
+  },
+  buttonView: {
+    width: 80,
+    marginLeft: 8,
   },
 });
 

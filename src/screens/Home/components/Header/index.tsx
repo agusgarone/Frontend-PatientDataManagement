@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+    elevation: 3,
   },
   sectionText: {
     fontSize: 18,
