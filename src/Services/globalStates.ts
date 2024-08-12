@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import {IPatient} from '../Interfaces/patient.model';
+import {IPatient} from '../Common/Interfaces/patient.model';
 
 interface IInitialValuesState {
   patientSelected: IPatient;

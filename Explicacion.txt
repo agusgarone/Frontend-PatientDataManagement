@@ -1,0 +1,26 @@
+# Diseño
+- Decidí mantener todo en una sola pantalla, creando un diseño simple pero funcional. 
+Un Header para indicar el nombre de la aplicacion y despues un Body para mostrar la
+informacion de los registros de los pacientes.
+
+Body: Un unico boton en la seccion superior del Home, que sirve para la creacion de 
+nuevos registros. Despues, en la seccion inferior una lista de los registros de los 
+pacientes que estos al momento de clickearlos se expande muestra mas informacion sobre
+el paciente en cuestion. 
+Abajo de toda esta informacion, se encuntran dos botones mas, uno para eliminar el 
+registro y otro para la edicion.
+
+Ya sea para el boton de Crear como para el de Editar, al momento de presionarlos, se 
+despliega desde la parte inferior del dispositivo un BottomSheet. Este contiene un 
+formulario para poder cargar nuevos datos o modificar los existentes.
+
+
+# Bibliotecas
+Axios: Utilicé esta libreria ya que es la que siempre uso al momento de tener que ir a consultar APIs y me resulta muy comoda.
+Formik: Escuché hablar de esta libreria de formularios y aproveche para usarla jaja.
+Moment: Para el manejo de las fechas y tambien porque llevo años utilizandola.
+Gesture-Handler: Esta libreria la utilicé para el funcionamiento del BottomSheet y que se puede arrastrar el componente 
+para una mejor interaccion con el usuario.
+Image-picker: La usé para seleccionar nuevas images del dispositivo y poder cargarlas en el FORM. Pero es uno de los detalles que me quedaron por hacer :(
+Yup: Validacion de datos en el formulario.
+Zustand: Decidí utilizar esta libreria para generar variables globales y no estar ensuciando los componentes pasando variables. 

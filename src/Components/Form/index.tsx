@@ -11,7 +11,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import * as ImagePicker from 'react-native-image-picker';
 import useGlobalSessionState from '../../Services/globalStates';
-import {IPatient} from '../../Interfaces/patient.model';
+import {IPatient} from '../../Common/Interfaces/patient.model';
 import moment from 'moment';
 import {ButtonStyle} from '../ButtonStyle';
 

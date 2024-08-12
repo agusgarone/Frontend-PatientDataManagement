@@ -1,4 +1,4 @@
-import React, {useState, useRef, Dispatch, SetStateAction} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   Image,
   StyleSheet,
@@ -8,23 +8,18 @@ import {
   Animated,
   ScrollView,
 } from 'react-native';
-import {IPatient} from '../../../../Interfaces/patient.model';
 import {ButtonStyle} from '../../../../Components/ButtonStyle';
 import useGlobalSessionState from '../../../../Services/globalStates';
 import {colors} from '../../../../Common/theme';
 import moment from 'moment';
+import {ICard} from '../../../../Common/Interfaces/card.model';
 
-const Card = ({
-  patient,
-  setShow,
-}: {
-  patient: IPatient;
-  setShow: Dispatch<SetStateAction<boolean>>;
-}) => {
+const Card = ({patient, setShow}: ICard) => {
   const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const {setPatientSelected, deletePatient} = useGlobalSessionState();
-  const imageUrl = patient.avatar !== '' ? encodeURI(patient.avatar) : '';
+  const index = patient.avatar.indexOf('com') + 3;
+  const result = patient.avatar.substring(index);
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -48,14 +43,18 @@ const Card = ({
             <Image
               style={styles.image}
               source={{
-                uri: imageUrl,
+                uri: `https://ipfs.io${result}`,
               }}
             />
           </View>
           <View style={styles.sectionInformation}>
             <Text style={styles.title}>{patient.name}</Text>
             <Text style={styles.date}>
-              {`Created at: ${moment(patient.createdAt).format('YYYY-MM-DD')}`}
+              {`Created at: ${
+                patient.createdAt !== ''
+                  ? moment(patient.createdAt).format('YYYY-MM-DD')
+                  : ''
+              }`}
             </Text>
           </View>
         </View>
@@ -63,8 +62,10 @@ const Card = ({
       <Animated.View style={[styles.content, {height: animatedHeight}]}>
         {expanded && (
           <ScrollView nestedScrollEnabled={true}>
-            <Text style={styles.website}>{patient.website}</Text>
-            <Text style={styles.description}>{patient.description}</Text>
+            <View style={styles.sectionInfo}>
+              <Text style={styles.website}>{patient.website}</Text>
+              <Text style={styles.description}>{patient.description}</Text>
+            </View>
             <View style={styles.sectionButtons}>
               <View style={styles.buttonView}>
                 <ButtonStyle
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
   image: {
     width: 50,
     height: 50,
+    borderRadius: 25,
   },
   title: {
     fontSize: 16,
@@ -130,6 +132,9 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 10,
+  },
+  sectionInfo: {
+    minHeight: 230,
   },
   website: {
     marginBottom: 4,

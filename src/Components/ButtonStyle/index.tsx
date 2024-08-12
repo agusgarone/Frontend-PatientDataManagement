@@ -1,14 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {colors} from '../../Common/theme';
+import {IButton} from '../../Common/Interfaces/button.model';
 
-export const ButtonStyle = ({
-  children,
-  action,
-}: {
-  children: string;
-  action: () => void;
-}) => {
+export const ButtonStyle = ({children, action}: IButton) => {
   return (
     <TouchableOpacity style={Styles.button} onPress={() => action()}>
       <Text style={Styles.text}>{children}</Text>

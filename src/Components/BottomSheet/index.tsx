@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
@@ -13,18 +13,14 @@ import {
 } from 'react-native-gesture-handler';
 import {useBottomSheetAnimation} from '../../Hooks/useBottomSheetAnimation';
 import MyForm from '../Form';
+import {IBottomSheet} from '../../Common/Interfaces/bottomSheet.model';
 
 const BottomSheet = ({
   show,
   onDismiss,
   setAnimation,
   animation,
-}: {
-  show: boolean;
-  onDismiss: () => void;
-  setAnimation: Dispatch<SetStateAction<boolean>>;
-  animation: boolean;
-}) => {
+}: IBottomSheet) => {
   const bottomSheetHeight = Dimensions.get('window').height * 0.93;
   const [open, setOpen] = useState(show);
   const bottom = useRef(new Animated.Value(-bottomSheetHeight)).current;

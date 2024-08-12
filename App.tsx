@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
 import {SafeAreaView, useColorScheme} from 'react-native';
 
@@ -19,7 +12,10 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  // * Explicacion del proyecto en Explicacion.txt
+
   return (
+    // eslint-disable-next-line react-native/no-inline-styles
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView style={backgroundStyle}>
         <Home />
