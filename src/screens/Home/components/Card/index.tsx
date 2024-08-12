@@ -18,8 +18,17 @@ const Card = ({patient, setShow}: ICard) => {
   const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const {setPatientSelected, deletePatient} = useGlobalSessionState();
-  const index = patient.avatar.indexOf('com') + 3;
-  const result = patient.avatar.substring(index);
+
+  const setImage = () => {
+    const firtsPart = patient.avatar.split(':')[0];
+    if (firtsPart.includes('file')) {
+      return patient.avatar;
+    } else {
+      const index = patient.avatar.indexOf('com') + 3;
+      const result = patient.avatar.substring(index);
+      return `https://ipfs.io${result}`;
+    }
+  };
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -43,7 +52,7 @@ const Card = ({patient, setShow}: ICard) => {
             <Image
               style={styles.image}
               source={{
-                uri: `https://ipfs.io${result}`,
+                uri: setImage(),
               }}
             />
           </View>

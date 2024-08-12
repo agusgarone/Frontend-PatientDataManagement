@@ -14,6 +14,7 @@ import useGlobalSessionState from '../../Services/globalStates';
 import {IPatient} from '../../Common/Interfaces/patient.model';
 import moment from 'moment';
 import {ButtonStyle} from '../ButtonStyle';
+import {colors} from '../../Common/theme';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('El nombre es requerido'),
@@ -60,7 +61,7 @@ const MyForm = ({onDismiss}: {onDismiss: () => void}) => {
       setImageUri(
         result.assets[0].uri === undefined ? '' : result.assets[0].uri,
       );
-      setFieldValue('image', result.assets[0]);
+      setFieldValue('avatar', result.assets[0].uri);
     }
   };
 
@@ -179,6 +180,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: 8,
   },
   input: {
     borderWidth: 1,
@@ -186,6 +188,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
+    color: colors.black,
   },
   textArea: {
     height: 100,
